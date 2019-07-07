@@ -10,10 +10,10 @@
 
                           ],
     "OnMinorRepository":  [
-        "purplemonkey"
+                              "purplemonkey"
                           ],
     "OnMajorRepository":  [
-        "purplemonkey"
+                              "purplemonkey"
                           ],
     "ModuleName":  "DailyArt"
 }

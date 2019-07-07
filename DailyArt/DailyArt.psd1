@@ -12,7 +12,7 @@
 # RootModule = ''
 
 # Version number of this module.
-ModuleVersion = '0.1.0'
+ModuleVersion = '0.2.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -51,7 +51,7 @@ Description = 'Get daily art in your shell from reddit.'
 # ProcessorArchitecture = ''
 
 # Modules that must be imported into the global environment prior to importing this module
-# RequiredModules = @()
+RequiredModules = @('OutConsolePicture')
 
 # Assemblies that must be loaded prior to importing this module
 # RequiredAssemblies = @()
@@ -66,10 +66,18 @@ Description = 'Get daily art in your shell from reddit.'
 # FormatsToProcess = @()
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-# NestedModules = @()
+NestedModules = @('.\classes\DAItem.ps1', 
+               '.\classes\DASettings.ps1', 
+               '.\private\00.Variables.ps1', 
+               '.\private\Update-DailyArt.ps1', 
+               '.\public\Get-DailyArtInfo.ps1', 
+               '.\public\Get-DailyArtSettings.ps1', 
+               '.\public\Set-DailyArtSettings.ps1', 
+               '.\public\Show-DailyArt.ps1')
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @()
+FunctionsToExport = 'Get-DailyArtInfo', 'Get-DailyArtSettings', 'Set-DailyArtSettings', 
+               'Show-DailyArt'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -116,7 +124,9 @@ PrivateData = @{
         # RequireLicenseAcceptance = $false
 
         # External dependent modules of this module
-        # ExternalModuleDependencies = @()
+        ExternalModuleDependencies = @(
+            'OutConsolePicture'
+        )
 
     } # End of PSData hashtable
 
