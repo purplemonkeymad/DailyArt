@@ -32,7 +32,7 @@ function Update-DailyArt {
             # If we are forced, the cache file is missing, or the cache file is too old.
             # do update
 
-            [uri]$FeedUri = "https://api.reddit.com/r/{0}/hot?raw_json=1" -f $Settings.Subreddit
+            [uri]$FeedUri = "https://api.reddit.com/r/{0}/{1}?raw_json=1" -f $Settings.Subreddit,$Settings.SortType
             if ($FeedUri) {
                 $Value = Invoke-RestMethod $FeedUri -Method Get
                 if (-not $Value) {
