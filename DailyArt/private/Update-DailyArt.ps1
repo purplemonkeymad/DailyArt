@@ -43,7 +43,10 @@ function Update-DailyArt {
                 $PostList = $Value.Data.Children.Data | 
                     Where-Object is_self -eq $false | 
                     Where-Object stickied -eq $false | 
-                    Where-Object media -eq $null
+                    Where-Object media -eq $null | 
+                    Where-Object {
+                        ([uri]$_.url | Split-Path -Leaf) -like '*.*'
+                    }
                 if ($PostList.Count -eq 0){
                     Write-Warning "No link posts in feed, nothing to update."
                     return

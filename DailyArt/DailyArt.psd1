@@ -12,7 +12,7 @@
 # RootModule = ''
 
 # Version number of this module.
-ModuleVersion = '0.2.0'
+ModuleVersion = '0.2.1'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -70,20 +70,21 @@ NestedModules = @('.\classes\DAItem.ps1',
                '.\classes\DASettings.ps1', 
                '.\private\00.Variables.ps1', 
                '.\private\Update-DailyArt.ps1', 
+               '.\public\Clear-DailyArt.ps1', 
                '.\public\Get-DailyArtInfo.ps1', 
                '.\public\Get-DailyArtSettings.ps1', 
                '.\public\Set-DailyArtSettings.ps1', 
                '.\public\Show-DailyArt.ps1')
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Get-DailyArtInfo', 'Get-DailyArtSettings', 'Set-DailyArtSettings', 
-               'Show-DailyArt'
+FunctionsToExport = 'Clear-DailyArt', 'Get-DailyArtInfo', 'Get-DailyArtSettings', 
+               'Set-DailyArtSettings', 'Show-DailyArt'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
 
 # Variables to export from this module
-VariablesToExport = '*'
+# VariablesToExport = @()
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
 AliasesToExport = @()
@@ -124,13 +125,11 @@ PrivateData = @{
         # RequireLicenseAcceptance = $false
 
         # External dependent modules of this module
-        ExternalModuleDependencies = @(
-            'OutConsolePicture'
-        )
+        ExternalModuleDependencies = @('OutConsolePicture')
 
     } # End of PSData hashtable
 
-} # End of PrivateData hashtable
+ } # End of PrivateData hashtable
 
 # HelpInfo URI of this module
 # HelpInfoURI = ''
