@@ -5,13 +5,12 @@ function Set-DailyArtSettings {
     )
     DynamicParam {
         # Create Parameters from object
-        $BaseObject = [DASettings]::new()
 
         # final parameters
         $ParameterCollection = [System.Management.Automation.RuntimeDefinedParameterDictionary]::new()
 
-        ## for each propertie add a paramter
-        foreach ($Property in ($BaseObject.getType().Getproperties()) ) {
+        ## for each property add a paramter
+        foreach ($Property in ([DASettings].Getproperties()) ) {
 
             if (-not $property.CanWrite) {
                 continue
@@ -29,7 +28,8 @@ function Set-DailyArtSettings {
             })
 
             # add any existing attributes for item
-            $Property.CustomAttributes.GetEnumerator() | ForEach-Object {
+            foreach ($_ in $Property.CustomAttributes.GetEnumerator() ) {
+                # wish there was a way to just clone the existing attributes.
                 if ($_.AttributeType -eq [System.Management.Automation.ValidateSetAttribute]){
                     $AttibuteList.Add(
                         [System.Management.Automation.ValidateSetAttribute]::new(
