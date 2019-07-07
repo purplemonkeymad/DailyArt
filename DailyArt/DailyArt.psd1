@@ -12,7 +12,7 @@
 # RootModule = ''
 
 # Version number of this module.
-ModuleVersion = '0.2.1'
+ModuleVersion = '0.2.2'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -73,12 +73,15 @@ NestedModules = @('.\classes\DAItem.ps1',
                '.\public\Clear-DailyArt.ps1', 
                '.\public\Get-DailyArtInfo.ps1', 
                '.\public\Get-DailyArtSettings.ps1', 
+               '.\public\Open-DailyArt.ps1', 
+               '.\public\Open-DailyArtComments.ps1', 
                '.\public\Set-DailyArtSettings.ps1', 
                '.\public\Show-DailyArt.ps1')
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = 'Clear-DailyArt', 'Get-DailyArtInfo', 'Get-DailyArtSettings', 
-               'Set-DailyArtSettings', 'Show-DailyArt'
+               'Open-DailyArt', 'Open-DailyArtComments', 'Set-DailyArtSettings', 
+               'Show-DailyArt'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
