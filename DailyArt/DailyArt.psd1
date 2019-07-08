@@ -21,10 +21,10 @@ ModuleVersion = '0.3.0'
 GUID = 'c3a9eae9-613f-433d-9f5c-7cefa4895bc5'
 
 # Author of this module
-Author = 'David'
+Author = 'David Brettle'
 
 # Company or vendor of this module
-CompanyName = 'hamlyn'
+CompanyName = 'david @ brettle.org.uk'
 
 # Copyright statement for this module
 Copyright = '(c) 2019 David. All rights reserved.'
@@ -33,7 +33,7 @@ Copyright = '(c) 2019 David. All rights reserved.'
 Description = 'Get daily art in your shell from reddit.'
 
 # Minimum version of the Windows PowerShell engine required by this module
-# PowerShellVersion = ''
+PowerShellVersion = '5.1'
 
 # Name of the Windows PowerShell host required by this module
 # PowerShellHostName = ''
@@ -107,7 +107,7 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @('OutConsolePicture','DailyArt','MOTD','reddit')
 
         # A URL to the license for this module.
         # LicenseUri = ''
