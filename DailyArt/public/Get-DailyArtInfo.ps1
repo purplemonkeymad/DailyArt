@@ -1,3 +1,13 @@
+<#
+.SYNOPSIS
+    List some short information about the current daily art image.
+.DESCRIPTION
+    Retrives the currently stored information on the current daily art image. Includes deatils like poster and full uri.
+.EXAMPLE
+    Get-DailyArtInfo
+.OUTPUTS
+    [DAItem] Object.
+#>
 function Get-DailyArtInfo {
     [CmdletBinding()]
     param (
