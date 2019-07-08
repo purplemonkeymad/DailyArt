@@ -40,12 +40,14 @@ function Update-DailyArt {
                     return
                 }
 
+                # remove posts that we don't want from results
+
                 $PostList = $Value.Data.Children.Data | 
-                    Where-Object is_self -eq $false | 
-                    Where-Object stickied -eq $false | 
-                    Where-Object media -eq $null | 
+                    Where-Object is_self -eq $false | # self text is not an image
+                    Where-Object stickied -eq $false | # if we don't remove them will will always get them.
+                    Where-Object media -eq $null | # is a card 
                     Where-Object {
-                        ([uri]$_.url | Split-Path -Leaf) -like '*.*'
+                        ([uri]$_.url | Split-Path -Leaf) -like '*.*' # url must have an extention in it.
                     }
                 if ($PostList.Count -eq 0){
                     Write-Warning "No link posts in feed, nothing to update."
@@ -62,6 +64,7 @@ function Update-DailyArt {
                     Description = $Post.title
                 }
 
+                # create cahce folder
                 if (-not (Test-Path -LiteralPath $FileCacheFolder)) {
                     [void] ( New-Item -Path $FileCacheFolder -ItemType Directory -Force)
                 }
