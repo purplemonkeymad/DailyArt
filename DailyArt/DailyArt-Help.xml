@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="utf-8"?>
+<helpItems schema="maml">
+    <command:command
+        xmlns:maml="http://schemas.microsoft.com/maml/2004/10"
+        xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10"
+        xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
+        xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10">
+        <command:details>
+            <command:name>Clear-DailyArt</command:name>
+            <command:verb>Clear</command:verb>
+            <command:noun>DailyArt</command:noun>
+            <maml:description>
+                <maml:para>Clears the currently stored daily art cache.</maml:para>
+            </maml:description>
+        </command:details>
+        <maml:description>
+            <maml:para>Removes that cached info and file for the daily art. After running this Show-DailArt will have to download a new image before any art can be displayed.</maml:para>
+        </maml:description>
+        <command:syntax>
+            <command:SyntaxItem>
+                <maml:name>Clear-DailyArt</maml:name>
+            </command:SyntaxItem>
+        </command:syntax>
+        <command:Parameters />
+        <command:inputTypes>
+            <command:inputType>
+                <dev:type>
+                    <maml:name>None</maml:name>
+                </dev:type>
+            </command:inputType>
+            <maml:description>
+                <maml:para>This command does not take input.</maml:para>
+            </maml:description>
+        </command:inputTypes>
+        <command:returnValues>
+            <command:returnValue>
+                <dev:type>
+                    <maml:name>None</maml:name>
+                </dev:type>
+            </command:returnValue>
+            <maml:description>
+                <maml:para>This command does not provide output.</maml:para>
+            </maml:description>
+        </command:returnValues>
+        <maml:alertSet />
+        <command:examples>
+            <command:example>
+                <maml:title>EXAMPLE 1:</maml:title>
+                <dev:code>Clear-DailyArt</dev:code>
+                <dev:remarks>
+                </dev:remarks>
+            </command:example>
+        </command:examples>
+        <command:relatedLinks />
+    </command:command>
+    <command:command
+        xmlns:maml="http://schemas.microsoft.com/maml/2004/10"
+        xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10"
+        xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
+        xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10">
+        <command:details>
+            <command:name>Get-DailyArtInfo</command:name>
+            <command:verb>Get</command:verb>
+            <command:noun>DailyArtInfo</command:noun>
+            <maml:description>
+                <maml:para>List some short information about the current daily art image.</maml:para>
+            </maml:description>
+        </command:details>
+        <maml:description>
+            <maml:para>Retrives the currently stored information on the current daily art image. Includes deatils like poster and full uri.</maml:para>
+        </maml:description>
+        <command:syntax>
+            <command:SyntaxItem>
+                <maml:name>Get-DailyArtInfo</maml:name>
+            </command:SyntaxItem>
+        </command:syntax>
+        <command:Parameters />
+        <command:inputTypes>
+            <command:inputType>
+                <dev:type>
+                    <maml:name />
+                </dev:type>
+            </command:inputType>
+            <maml:description>
+                <maml:para>This cmdlet does not accept any input.</maml:para>
+            </maml:description>
+        </command:inputTypes>
+        <command:returnValues>
+            <command:returnValue>
+                <dev:type>
+                    <maml:name>DAItem</maml:name>
+                </dev:type>
+            </command:returnValue>
+            <maml:description>
+                <maml:para>An object with some information properties.</maml:para>
+            </maml:description>
+        </command:returnValues>
+        <maml:alertSet />
+        <command:examples>
+            <command:example>
+                <maml:title>EXAMPLE 1:</maml:title>
+                <dev:code>Get-DailyArtInfo</dev:code>
+                <dev:remarks>
+                </dev:remarks>
+            </command:example>
+        </command:examples>
+        <command:relatedLinks />
+    </command:command>
+    <command:command
+        xmlns:maml="http://schemas.microsoft.com/maml/2004/10"
+        xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10"
+        xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
+        xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10">
+        <command:details>
+            <command:name>Get-DailyArtSettings</command:name>
+            <command:verb>Get</command:verb>
+            <command:noun>DailyArtSettings</command:noun>
+            <maml:description>
+                <maml:para>Shows current configuration for daily art.</maml:para>
+            </maml:description>
+        </command:details>
+        <maml:description>
+            <maml:para>Gets the current settings that are used to determine a new art image. Or even if it should show the cached one.</maml:para>
+        </maml:description>
+        <command:syntax>
+            <command:SyntaxItem>
+                <maml:name>Get-DailyArtSettings</maml:name>
+            </command:SyntaxItem>
+        </command:syntax>
+        <command:Parameters />
+        <command:inputTypes>
+            <command:inputType>
+                <dev:type>
+                    <maml:name>None
+</maml:name>
+                </dev:type>
+            </command:inputType>
+            <maml:description>
+                <maml:para>This cmdlet does not accept any input.</maml:para>
+            </maml:description>
+        </command:inputTypes>
+        <command:returnValues>
+            <command:returnValue>
+                <dev:type>
+                    <maml:name>DASettings</maml:name>
+                </dev:type>
+            </command:returnValue>
+            <maml:description>
+                <maml:para>Object containing configuration properties.</maml:para>
+            </maml:description>
+        </command:returnValues>
+        <maml:alertSet />
+        <command:examples>
+            <command:example>
+                <maml:title>Example 1:</maml:title>
+                <dev:remarks>
+                    <maml:para></maml:para>
+                </dev:remarks>
+                <dev:code>Get-DailyArtSettings</dev:code>
+            </command:example>
+        </command:examples>
+        <command:relatedLinks />
+    </command:command>
+    <command:command
+        xmlns:maml="http://schemas.microsoft.com/maml/2004/10"
+        xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10"
+        xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
+        xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10">
+        <command:details>
+            <command:name>Open-DailyArt</command:name>
+            <command:verb>Open</command:verb>
+            <command:noun>DailyArt</command:noun>
+            <maml:description>
+                <maml:para>Open up the source url that the daily art was pulled from.</maml:para>
+            </maml:description>
+        </command:details>
+        <maml:description>
+            <maml:para>Starts the source uri of the most recent daily art. It will allow windows to use the default browser for the protocol.</maml:para>
+        </maml:description>
+        <command:syntax>
+            <command:SyntaxItem>
+                <maml:name>Open-DailyArt</maml:name>
+            </command:SyntaxItem>
+        </command:syntax>
+        <command:Parameters />
+        <command:inputTypes>
+            <command:inputType>
+                <dev:type>
+                    <maml:name />
+                </dev:type>
+            </command:inputType>
+            <maml:description>
+                <maml:para>InputType description</maml:para>
+            </maml:description>
+        </command:inputTypes>
+        <command:returnValues>
+            <command:returnValue>
+                <dev:type>
+                    <maml:name />
+                </dev:type>
+            </command:returnValue>
+            <maml:description>
+                <maml:para>Output Type description</maml:para>
+            </maml:description>
+        </command:returnValues>
+        <maml:alertSet>
+            <maml:alert>
+                <maml:para>Opens using the system association for https://</maml:para>
+            </maml:alert>
+        </maml:alertSet>
+        <command:examples>
+            <command:example>
+                <maml:title>EXAMPLE 1:</maml:title>
+                <dev:code>Open-DailyArt</dev:code>
+                <dev:remarks>
+                </dev:remarks>
+            </command:example>
+        </command:examples>
+        <command:relatedLinks />
+    </command:command>
+    <command:command
+        xmlns:maml="http://schemas.microsoft.com/maml/2004/10"
+        xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10"
+        xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
+        xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10">
+        <command:details>
+            <command:name>Open-DailyArtComments</command:name>
+            <command:verb>Open</command:verb>
+            <command:noun>DailyArtComments</command:noun>
+            <maml:description>
+                <maml:para>Open up the post that the daily art was pulled from.</maml:para>
+            </maml:description>
+        </command:details>
+        <maml:description>
+            <maml:para>Starts the source post of the most recent daily art. It will allow windows to use the default browser for the protocol.</maml:para>
+        </maml:description>
+        <command:syntax>
+            <command:SyntaxItem>
+                <maml:name>Open-DailyArtComments</maml:name>
+            </command:SyntaxItem>
+        </command:syntax>
+        <command:Parameters />
+        <command:inputTypes>
+            <command:inputType>
+                <dev:type>
+                    <maml:name />
+                </dev:type>
+            </command:inputType>
+            <maml:description>
+                <maml:para>InputType description</maml:para>
+            </maml:description>
+        </command:inputTypes>
+        <command:returnValues>
+            <command:returnValue>
+                <dev:type>
+                    <maml:name />
+                </dev:type>
+            </command:returnValue>
+            <maml:description>
+                <maml:para>Output Type description</maml:para>
+            </maml:description>
+        </command:returnValues>
+        <maml:alertSet>
+            <maml:alert>
+                <maml:para>Opens using the system association for https://</maml:para>
+            </maml:alert>
+        </maml:alertSet>
+        <command:examples>
+            <command:example>
+                <maml:title>EXAMPLE 1:</maml:title>
+                <dev:code>Open-DailyArtComments</dev:code>
+                <dev:remarks>
+                    <maml:para />
+                    <maml:para />
+                    <maml:para />
+                    <maml:para />
+                    <maml:para />
+                </dev:remarks>
+            </command:example>
+        </command:examples>
+        <command:relatedLinks />
+    </command:command>
+    <command:command
+        xmlns:maml="http://schemas.microsoft.com/maml/2004/10"
+        xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10"
+        xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
+        xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10">
+        <command:details>
+            <command:name>Set-DailyArtSettings</command:name>
+            <command:verb>Set</command:verb>
+            <command:noun>DailyArtSettings</command:noun>
+            <maml:description>
+                <maml:para>Set-DailyArtSettings Synopsis.</maml:para>
+            </maml:description>
+        </command:details>
+        <maml:description>
+            <maml:para>Set-DailyArtSettings Description.</maml:para>
+        </maml:description>
+        <command:syntax>
+            <command:SyntaxItem>
+                <maml:name>Set-DailyArtSettings</maml:name>
+                <command:parameter position="Named" pipelineInput="true (ByValue)" aliases="None" required="false" variableLength="" globbing="">
+                    <maml:name>Subreddit</maml:name>
+                    <maml:Description>
+                        <maml:para>Description for Subreddit</maml:para>
+                    </maml:Description>
+                    <command:parameterValue variableLength="False" Required="True">string</command:parameterValue>
+                    <dev:type>
+                        <maml:name>string</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                </command:parameter>
+                <command:parameter position="Named" pipelineInput="true (ByValue)" aliases="None" required="false" variableLength="" globbing="">
+                    <maml:name>SortType</maml:name>
+                    <maml:Description>
+                        <maml:para>Description for SortType</maml:para>
+                    </maml:Description>
+                    <command:parameterValue variableLength="False" Required="True">string</command:parameterValue>
+                    <dev:type>
+                        <maml:name>string</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                </command:parameter>
+                <command:parameter position="Named" pipelineInput="true (ByValue)" aliases="None" required="false" variableLength="" globbing="">
+                    <maml:name>MaxAge</maml:name>
+                    <maml:Description>
+                        <maml:para>Description for MaxAge</maml:para>
+                    </maml:Description>
+                    <command:parameterValue variableLength="False" Required="True">timespan</command:parameterValue>
+                    <dev:type>
+                        <maml:name>timespan</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                </command:parameter>
+            </command:SyntaxItem>
+        </command:syntax>
+        <command:Parameters>
+            <command:parameter position="Named" pipelineInput="true (ByValue)" aliases="None" required="false" variableLength="" globbing="">
+                <maml:name>MaxAge</maml:name>
+                <maml:Description>
+                    <maml:para>Description for MaxAge</maml:para>
+                </maml:Description>
+                <command:parameterValue variableLength="False" Required="True">timespan</command:parameterValue>
+                <dev:type>
+                    <maml:name>timespan</maml:name>
+                    <maml:uri />
+                </dev:type>
+            </command:parameter>
+            <command:parameter position="Named" pipelineInput="true (ByValue)" aliases="None" required="false" variableLength="" globbing="">
+                <maml:name>SortType</maml:name>
+                <maml:Description>
+                    <maml:para>Description for SortType</maml:para>
+                </maml:Description>
+                <command:parameterValue variableLength="False" Required="True">string</command:parameterValue>
+                <dev:type>
+                    <maml:name>string</maml:name>
+                    <maml:uri />
+                </dev:type>
+            </command:parameter>
+            <command:parameter position="Named" pipelineInput="true (ByValue)" aliases="None" required="false" variableLength="" globbing="">
+                <maml:name>Subreddit</maml:name>
+                <maml:Description>
+                    <maml:para>Description for Subreddit</maml:para>
+                </maml:Description>
+                <command:parameterValue variableLength="False" Required="True">string</command:parameterValue>
+                <dev:type>
+                    <maml:name>string</maml:name>
+                    <maml:uri />
+                </dev:type>
+            </command:parameter>
+        </command:Parameters>
+        <command:inputTypes>
+            <command:inputType>
+                <dev:type>
+                    <maml:name>System.String
+System.TimeSpan
+</maml:name>
+                </dev:type>
+            </command:inputType>
+            <maml:description>
+                <maml:para>InputType description</maml:para>
+            </maml:description>
+        </command:inputTypes>
+        <command:returnValues>
+            <command:returnValue>
+                <dev:type>
+                    <maml:name>System.Object</maml:name>
+                </dev:type>
+            </command:returnValue>
+            <maml:description>
+                <maml:para>Output Type description</maml:para>
+            </maml:description>
+        </command:returnValues>
+        <maml:alertSet />
+        <command:examples>
+            <command:example>
+                <maml:title>Example 1: __AllParameterSets</maml:title>
+                <dev:remarks>
+                    <maml:para>Explanation of parameter set.</maml:para>
+                </dev:remarks>
+                <dev:code>Set-DailyArtSettings</dev:code>
+            </command:example>
+        </command:examples>
+        <command:relatedLinks />
+    </command:command>
+    <command:command
+        xmlns:maml="http://schemas.microsoft.com/maml/2004/10"
+        xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10"
+        xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
+        xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10">
+        <command:details>
+            <command:name>Show-DailyArt</command:name>
+            <command:verb>Show</command:verb>
+            <command:noun>DailyArt</command:noun>
+            <maml:description>
+                <maml:para>Check for and shows a daily art feed in the console.</maml:para>
+            </maml:description>
+        </command:details>
+        <maml:description>
+            <maml:para>Display a daily art inside the console using Out-ConsolePicture. The pictures are pulled from a reddit subreddit as a back end feed.
+
+The cmdlet only considers posts that have a direct link to an image. If the image is via a media preview or is a text post it will be ignored.</maml:para>
+        </maml:description>
+        <command:syntax>
+            <command:SyntaxItem>
+                <maml:name>Show-DailyArt</maml:name>
+                <command:parameter position="named" pipelineInput="false" aliases="" required="false" variableLength="" globbing="false">
+                    <maml:name>Refresh</maml:name>
+                    <maml:Description>
+                        <maml:para>Will ignore the cached picture and download a new daily image.</maml:para>
+                    </maml:Description>
+                    <command:parameterValue variableLength="False" Required="True">SwitchParameter</command:parameterValue>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                </command:parameter>
+                <command:parameter position="named" pipelineInput="false" aliases="" required="false" variableLength="" globbing="false">
+                    <maml:name>IncludeDescription</maml:name>
+                    <maml:Description>
+                        <maml:para>Include a short line with the title of the source post.</maml:para>
+                    </maml:Description>
+                    <command:parameterValue variableLength="False" Required="True">SwitchParameter</command:parameterValue>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                </command:parameter>
+            </command:SyntaxItem>
+        </command:syntax>
+        <command:Parameters>
+            <command:parameter position="named" pipelineInput="false" aliases="" required="false" variableLength="" globbing="false">
+                <maml:name>Refresh</maml:name>
+                <maml:Description>
+                    <maml:para>Will ignore the cached picture and download a new daily image.</maml:para>
+                </maml:Description>
+                <command:parameterValue variableLength="False" Required="True">SwitchParameter</command:parameterValue>
+                <dev:type>
+                    <maml:name>SwitchParameter</maml:name>
+                    <maml:uri />
+                </dev:type>
+            </command:parameter>
+            <command:parameter position="named" pipelineInput="false" aliases="" required="false" variableLength="" globbing="false">
+                <maml:name>IncludeDescription</maml:name>
+                <maml:Description>
+                    <maml:para>Include a short line with the title of the source post.</maml:para>
+                </maml:Description>
+                <command:parameterValue variableLength="False" Required="True">SwitchParameter</command:parameterValue>
+                <dev:type>
+                    <maml:name>SwitchParameter</maml:name>
+                    <maml:uri />
+                </dev:type>
+            </command:parameter>
+        </command:Parameters>
+        <command:inputTypes>
+            <command:inputType>
+                <dev:type>
+                    <maml:name />
+                </dev:type>
+            </command:inputType>
+            <maml:description>
+                <maml:para>InputType description</maml:para>
+            </maml:description>
+        </command:inputTypes>
+        <command:returnValues>
+            <command:returnValue>
+                <dev:type>
+                    <maml:name />
+                </dev:type>
+            </command:returnValue>
+            <maml:description>
+                <maml:para>Output Type description</maml:para>
+            </maml:description>
+        </command:returnValues>
+        <maml:alertSet>
+            <maml:alert>
+                <maml:para>The cmdlet requires the module OutConsolePicture to work.</maml:para>
+            </maml:alert>
+        </maml:alertSet>
+        <command:examples>
+            <command:example>
+                <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
+                <dev:code>Show-DailyArt</dev:code>
+                <dev:remarks>
+                    <maml:para>Displays either the cached or a new picture.</maml:para>
+                    <maml:para />
+                    <maml:para />
+                    <maml:para />
+                    <maml:para />
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
+                <dev:code>Show-DailyArt -Refresh -IncludeDescription</dev:code>
+                <dev:remarks>
+                    <maml:para>Forces a download of a new picture and display it in the console. It will also include the title of the post.</maml:para>
+                    <maml:para />
+                    <maml:para />
+                    <maml:para />
+                    <maml:para />
+                </dev:remarks>
+            </command:example>
+        </command:examples>
+        <command:relatedLinks />
+    </command:command>
+</helpItems>
