@@ -3,7 +3,10 @@
                           "\\.private\\.ps.?1",
                           "\\\\private\\\\"
                       ],
-    "SettingsVersion":  4,
+    "ScriptsToProcessMask":  [
+                                 "\\\\ScriptsToProcess\\\\"
+                             ],
+    "SettingsVersion":  6,
     "ResetBuildNumberOnRelease":  true,
     "ResolveEPSOnInvoke":  false,
     "OnBuildRepository":  [
@@ -15,5 +18,7 @@
     "OnMajorRepository":  [
                               "purplemonkey"
                           ],
+    "CompileCsFiles":  false,
+    "SingleFile":  true,
     "ModuleName":  "DailyArt"
 }
