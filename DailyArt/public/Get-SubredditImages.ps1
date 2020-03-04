@@ -72,7 +72,7 @@ function Get-SubredditImages {
         $MatchingPosts = $Posts.where({
             ([bool]$IncludeAllTitles -or # include all titles
             ($_.title -Match "\d+\s*(x|\*)\s*\d+")) -and # has number x number in title
-            $_.url -match "\.png|.jpg|.jpeg" -and # is a direct link to image
+            $_.url -match "(\.png|.jpg|.jpeg)(\?.+)?$" -and # is a direct link to image
             ([bool]$IncludeNSFW -or # accept nsfw
             (-not $_.over_18)) # ain't a nsfw post
         })
@@ -87,7 +87,7 @@ function Get-SubredditImages {
         }
 
         $MatchingPosts | ForEach-Object {
-            Invoke-WebRequest $_.url -OutFile (Join-Path $Path (Split-Path $_.url -Leaf)) -UseBasicParsing
+            Invoke-WebRequest $_.url -OutFile (Join-Path $Path (Split-Path ($_.url -replace '\?.*$') -Leaf)) -UseBasicParsing
         }
     }
 }
