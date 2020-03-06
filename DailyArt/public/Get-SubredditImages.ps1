@@ -27,7 +27,7 @@ This was made for keeping a folder up-to-date with new wallpapers for slideshows
 #>
 
 function Get-SubredditImages {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param (
         [parameter(Mandatory)]
         [string]
@@ -65,10 +65,11 @@ function Get-SubredditImages {
             $Path = $Path.Fullname
         }
         $PageCounter = $PageCount
+        $seenCount = 0
         do {
 
             $uri = if ($LastItem){
-                "https://api.reddit.com/r/$Subreddit/?count=25&after=$LastItem"
+                "https://api.reddit.com/r/$Subreddit/?count=$seenCount&after=$LastItem"
             } else {
                 "https://api.reddit.com/r/$Subreddit/"
             }
@@ -78,7 +79,7 @@ function Get-SubredditImages {
                 Write-Error "Cannot read post data"
                 return
             }
-            $Posts = $SRFeed.data.children | Where-Object kind -eq 't3' | ForEach-Object data
+            $Posts = $SRFeed.data.children | Where-Object kind -eq 't3' | ForEach-Object data -WhatIf:$false
             $MatchingPosts = $Posts.where({
                 ([bool]$IncludeAllTitles -or # include all titles
                 ($_.title -Match "\d+\s*(x|\*)\s*\d+")) -and # has number x number in title
@@ -99,13 +100,16 @@ function Get-SubredditImages {
             $MatchingPosts | ForEach-Object {
                 $outPath = (Join-Path $Path (Split-Path ($_.url -replace '\?.*$') -Leaf))
                 if (-not (Test-Path $outPath -PathType Leaf)){
-                    Invoke-WebRequest $_.url -OutFile $outPath -UseBasicParsing
+                    if ($PSCmdlet.ShouldProcess($_.url , "Download to $outPath")){
+                        Invoke-WebRequest $_.url -OutFile $outPath -UseBasicParsing
+                    }
                 }
             }
 
             # setup info required to get next page.
-            $LastItem = $SRFeed.data.children[-1].data.name
+            $LastItem = $SRFeed.data.after
             $PageCounter--
+            $seenCount += $SRFeed.data.dist
 
 
         } until ($PageCounter -lt 1)
