@@ -87,7 +87,10 @@ function Get-SubredditImages {
         }
 
         $MatchingPosts | ForEach-Object {
-            Invoke-WebRequest $_.url -OutFile (Join-Path $Path (Split-Path ($_.url -replace '\?.*$') -Leaf)) -UseBasicParsing
+            $outPath = (Join-Path $Path (Split-Path ($_.url -replace '\?.*$') -Leaf))
+            if (-not (Test-Path $outPath -PathType Leaf)){
+                Invoke-WebRequest $_.url -OutFile $outPath -UseBasicParsing
+            }
         }
     }
 }
