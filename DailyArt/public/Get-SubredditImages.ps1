@@ -43,6 +43,8 @@ function Get-SubredditImages {
         $Subreddit,
         [parameter(Mandatory)]
         $Path,
+        [ValidateRange(1,[int32]::MaxValue)]
+        [int]$PageCount = 1,
         [switch]$IncludeNSFW,
         [switch]$ClearTargetFolder,
         [switch]$IncludeAllTitles
@@ -62,35 +64,50 @@ function Get-SubredditImages {
         if ($Path.Fullname){
             $Path = $Path.Fullname
         }
+        $PageCounter = $PageCount
+        do {
 
-        $SRFeed = Invoke-RestMethod -Uri "https://reddit.com/r/$Subreddit/.json"
-        $Posts = $SRFeed.data.children.data
-        if (-not $Posts){
-            Write-Error "Cannot read post data"
-            return
-        }
-        $MatchingPosts = $Posts.where({
-            ([bool]$IncludeAllTitles -or # include all titles
-            ($_.title -Match "\d+\s*(x|\*)\s*\d+")) -and # has number x number in title
-            $_.url -match "(\.png|.jpg|.jpeg)(\?.+)?$" -and # is a direct link to image
-            ([bool]$IncludeNSFW -or # accept nsfw
-            (-not $_.over_18)) # ain't a nsfw post
-        })
-
-        if ($MatchingPosts.count -eq 0){
-            Write-Error "No valid matching posts found."
-            return
-        }
-
-        if ($ClearTargetFolder){
-            Get-ChildItem -LiteralPath $Path | Where-Object Extension -in @('.jpg','.png','jpeg') | Remove-Item
-        }
-
-        $MatchingPosts | ForEach-Object {
-            $outPath = (Join-Path $Path (Split-Path ($_.url -replace '\?.*$') -Leaf))
-            if (-not (Test-Path $outPath -PathType Leaf)){
-                Invoke-WebRequest $_.url -OutFile $outPath -UseBasicParsing
+            $uri = if ($LastItem){
+                "https://api.reddit.com/r/$Subreddit/?count=25&after=$LastItem"
+            } else {
+                "https://api.reddit.com/r/$Subreddit/"
             }
-        }
+
+            $SRFeed = Invoke-RestMethod -Uri $uri
+            if (-not $SRFeed.data.children){
+                Write-Error "Cannot read post data"
+                return
+            }
+            $Posts = $SRFeed.data.children | Where-Object kind -eq 't3' | ForEach-Object data
+            $MatchingPosts = $Posts.where({
+                ([bool]$IncludeAllTitles -or # include all titles
+                ($_.title -Match "\d+\s*(x|\*)\s*\d+")) -and # has number x number in title
+                $_.url -match "(\.png|.jpg|.jpeg)(\?.+)?$" -and # is a direct link to image
+                ([bool]$IncludeNSFW -or # accept nsfw
+                (-not $_.over_18)) # ain't a nsfw post
+            })
+
+            if ($MatchingPosts.count -eq 0){
+                Write-Error "No valid matching posts found."
+                return
+            }
+
+            if ($ClearTargetFolder){
+                Get-ChildItem -LiteralPath $Path | Where-Object Extension -in @('.jpg','.png','jpeg') | Remove-Item
+            }
+
+            $MatchingPosts | ForEach-Object {
+                $outPath = (Join-Path $Path (Split-Path ($_.url -replace '\?.*$') -Leaf))
+                if (-not (Test-Path $outPath -PathType Leaf)){
+                    Invoke-WebRequest $_.url -OutFile $outPath -UseBasicParsing
+                }
+            }
+
+            # setup info required to get next page.
+            $LastItem = $SRFeed.data.children[-1].data.name
+            $PageCounter--
+
+
+        } until ($PageCounter -lt 1)
     }
 }
