@@ -47,7 +47,8 @@ function Get-SubredditImages {
         [int]$PageCount = 1,
         [switch]$IncludeNSFW,
         [switch]$ClearTargetFolder,
-        [switch]$IncludeAllTitles
+        [switch]$IncludeAllTitles,
+        [switch]$SaveMetaData
 
     )
     
@@ -103,6 +104,9 @@ function Get-SubredditImages {
 
         if ($ClearTargetFolder){
             Get-ChildItem -LiteralPath $Path | Where-Object Extension -in @('.jpg','.png','jpeg') | Remove-Item
+            if ($SaveMetaData){
+                Get-ChildItem -LiteralPath $Path | Where-Object Extension -in @('.json') | Remove-Item
+            }
         }
 
         $MatchingPosts | ForEach-Object {
@@ -110,6 +114,11 @@ function Get-SubredditImages {
             if (-not (Test-Path $outPath -PathType Leaf)){
                 if ($PSCmdlet.ShouldProcess($_.url , "Download $($_.name), with title $($_.title) to $outPath")){
                     Invoke-WebRequest $_.url -OutFile $outPath -UseBasicParsing
+                    $OutputFile = Get-Item $outPath -ErrorAction SilentlyContinue
+                    if ($SaveMetaData -and $OutputFile){
+                        $jsonout =  ( Join-path $OutputFile.Directory $OutputFile.basename ) +'.json'
+                        $_ | ConvertTo-Json -Depth 20 | Set-Content $jsonout
+                    }
                 }
             }
         }
