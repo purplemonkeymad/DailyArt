@@ -82,7 +82,7 @@ function Get-SubredditImages {
             $Posts = $SRFeed.data.children | Where-Object kind -eq 't3' | ForEach-Object data -WhatIf:$false
             $Posts.where({
                 ([bool]$IncludeAllTitles -or # include all titles
-                ($_.title -Match "\d+\s*(x|\*)\s*\d+")) -and # has number x number in title
+                ($_.title -Match "\d+\s*[x*\u00D7]\s*\d+")) -and # has number x number in title
                 $_.url -match "(\.png|.jpg|.jpeg)(\?.+)?$" -and # is a direct link to image
                 ([bool]$IncludeNSFW -or # accept nsfw
                 (-not $_.over_18)) # ain't a nsfw post
@@ -108,7 +108,7 @@ function Get-SubredditImages {
         $MatchingPosts | ForEach-Object {
             $outPath = (Join-Path $Path (Split-Path ($_.url -replace '\?.*$') -Leaf))
             if (-not (Test-Path $outPath -PathType Leaf)){
-                if ($PSCmdlet.ShouldProcess($_.url , "Download to $outPath")){
+                if ($PSCmdlet.ShouldProcess($_.url , "Download $($_.name), with title $($_.title) to $outPath")){
                     Invoke-WebRequest $_.url -OutFile $outPath -UseBasicParsing
                 }
             }
