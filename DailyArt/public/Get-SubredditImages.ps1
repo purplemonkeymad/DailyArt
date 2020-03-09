@@ -100,7 +100,7 @@ function Get-SubredditImages {
             $MatchingPosts | ForEach-Object {
                 $outPath = (Join-Path $Path (Split-Path ($_.url -replace '\?.*$') -Leaf))
                 if (-not (Test-Path $outPath -PathType Leaf)){
-                    if ($PSCmdlet.ShouldProcess($_.url , "Download to $outPath")){
+                    if ($PSCmdlet.ShouldProcess($_.url , "Download $($_.name), with title $($_.title) to $outPath")){
                         Invoke-WebRequest $_.url -OutFile $outPath -UseBasicParsing
                     }
                 }
