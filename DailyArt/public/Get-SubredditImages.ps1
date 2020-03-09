@@ -66,7 +66,7 @@ function Get-SubredditImages {
         }
         $PageCounter = $PageCount
         $seenCount = 0
-        do {
+        $MatchingPosts = do {
 
             $uri = if ($LastItem){
                 "https://api.reddit.com/r/$Subreddit/?count=$seenCount&after=$LastItem"
@@ -80,31 +80,13 @@ function Get-SubredditImages {
                 return
             }
             $Posts = $SRFeed.data.children | Where-Object kind -eq 't3' | ForEach-Object data -WhatIf:$false
-            $MatchingPosts = $Posts.where({
+            $Posts.where({
                 ([bool]$IncludeAllTitles -or # include all titles
                 ($_.title -Match "\d+\s*(x|\*)\s*\d+")) -and # has number x number in title
                 $_.url -match "(\.png|.jpg|.jpeg)(\?.+)?$" -and # is a direct link to image
                 ([bool]$IncludeNSFW -or # accept nsfw
                 (-not $_.over_18)) # ain't a nsfw post
-            })
-
-            if ($MatchingPosts.count -eq 0){
-                Write-Error "No valid matching posts found."
-                return
-            }
-
-            if ($ClearTargetFolder){
-                Get-ChildItem -LiteralPath $Path | Where-Object Extension -in @('.jpg','.png','jpeg') | Remove-Item
-            }
-
-            $MatchingPosts | ForEach-Object {
-                $outPath = (Join-Path $Path (Split-Path ($_.url -replace '\?.*$') -Leaf))
-                if (-not (Test-Path $outPath -PathType Leaf)){
-                    if ($PSCmdlet.ShouldProcess($_.url , "Download to $outPath")){
-                        Invoke-WebRequest $_.url -OutFile $outPath -UseBasicParsing
-                    }
-                }
-            }
+            }) # let valid posts fall into variable
 
             # setup info required to get next page.
             $LastItem = $SRFeed.data.after
@@ -113,5 +95,23 @@ function Get-SubredditImages {
 
 
         } until ($PageCounter -lt 1)
+
+        if ($MatchingPosts.count -eq 0){
+            Write-Error "No valid matching posts found."
+            return
+        }
+
+        if ($ClearTargetFolder){
+            Get-ChildItem -LiteralPath $Path | Where-Object Extension -in @('.jpg','.png','jpeg') | Remove-Item
+        }
+
+        $MatchingPosts | ForEach-Object {
+            $outPath = (Join-Path $Path (Split-Path ($_.url -replace '\?.*$') -Leaf))
+            if (-not (Test-Path $outPath -PathType Leaf)){
+                if ($PSCmdlet.ShouldProcess($_.url , "Download to $outPath")){
+                    Invoke-WebRequest $_.url -OutFile $outPath -UseBasicParsing
+                }
+            }
+        }
     }
 }
