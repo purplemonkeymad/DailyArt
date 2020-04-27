@@ -46,6 +46,7 @@ function Update-DailyArt {
                     Where-Object is_self -eq $false | # self text is not an image
                     Where-Object stickied -eq $false | # if we don't remove them will will always get them.
                     Where-Object media -eq $null | # is a card 
+                    Where-Object author -NotIn $settings.IgnoreUsername |
                     Where-Object {
                         ([uri]$_.url | Split-Path -Leaf) -like '*.*' # url must have an extention in it.
                     }

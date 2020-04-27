@@ -26,6 +26,7 @@
 function Show-DailyArt {
     [CmdletBinding()]
     param (
+        [Alias('Force')]
         [switch]$Refresh,
         [switch]$IncludeDescription
     )

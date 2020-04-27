@@ -65,6 +65,7 @@ function Get-SubredditImages {
         if ($Path.Fullname){
             $Path = $Path.Fullname
         }
+        $Settings = Get-DailyArtSettings
         $PageCounter = $PageCount
         $seenCount = 0
         $MatchingPosts = do {
@@ -86,7 +87,8 @@ function Get-SubredditImages {
                 ($_.title -Match "\d+\s*[x*\u00D7]\s*\d+")) -and # has number x number in title
                 $_.url -match "(\.png|.jpg|.jpeg)(\?.+)?$" -and # is a direct link to image
                 ([bool]$IncludeNSFW -or # accept nsfw
-                (-not $_.over_18)) # ain't a nsfw post
+                (-not $_.over_18)) -and # ain't a nsfw post
+                ($_.author -NotIn $settings.IgnoreUsername) # user blacklist
             }) # let valid posts fall into variable
 
             # setup info required to get next page.

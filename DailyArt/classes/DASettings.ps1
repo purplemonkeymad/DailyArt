@@ -13,4 +13,7 @@ class DASettings {
     # how long do we cache the daily art for. (20h)
     [timespan]$MaxAge = "20:00:00.0"
 
+    # if you don't want results from a set poster add them to this list.
+    [string[]]$IgnoreUsername = @()
+
 }
