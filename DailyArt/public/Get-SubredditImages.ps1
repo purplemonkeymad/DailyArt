@@ -48,7 +48,8 @@ function Get-SubredditImages {
         [switch]$IncludeNSFW,
         [switch]$ClearTargetFolder,
         [switch]$IncludeAllTitles,
-        [switch]$SaveMetaData
+        [switch]$SaveMetaData,
+        [switch]$UseRedditName
 
     )
     
@@ -112,7 +113,11 @@ function Get-SubredditImages {
         }
 
         $MatchingPosts | ForEach-Object {
-            $outPath = (Join-Path $Path (Split-Path ($_.url -replace '\?.*$') -Leaf))
+            $outPath = if ($UseRedditName) { 
+                    (Join-Path $Path (Split-Path ($_.name) -Leaf))
+                } else {
+                    (Join-Path $Path (Split-Path ($_.url -replace '\?.*$') -Leaf))
+                }
             if (-not (Test-Path $outPath -PathType Leaf)){
                 if ($PSCmdlet.ShouldProcess($_.url , "Download $($_.name), with title $($_.title) to $outPath")){
                     Invoke-WebRequest $_.url -OutFile $outPath -UseBasicParsing
