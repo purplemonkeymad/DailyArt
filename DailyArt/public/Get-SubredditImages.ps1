@@ -71,6 +71,9 @@ function Get-SubredditImages {
         $seenCount = 0
         $MatchingPosts = do {
 
+            # assigning outside of the do loop allows pagnation to be coded inside
+            # and allow PS to auto complie the results we output.
+
             $uri = if ($LastItem){
                 "https://api.reddit.com/r/$Subreddit/?count=$seenCount&after=$LastItem"
             } else {
@@ -113,6 +116,9 @@ function Get-SubredditImages {
         }
 
         $MatchingPosts | ForEach-Object {
+            # the replace regex '\?.*$' removes the first question mark to the end of the string
+            # this is to remove any query strings from the uri, this is just for the cheap determining of the name
+
             $outPath = if ($UseRedditName) { 
                     $ext = ($_.url -replace '\?.*$') -split '\.' | Select-Object -Last 1
                     if (-not $ext) { $ext = 'jpg'} # default guess
@@ -143,6 +149,7 @@ function Get-SubredditImages {
                     }
 
                     if ($SaveMetaData -and $OutputFile){
+                        # this should save the info with the same name but different extension.
                         $jsonout =  ( Join-path $OutputFile.Directory $OutputFile.basename ) +'.json'
                         $_ | ConvertTo-Json -Depth 20 | Set-Content $jsonout
                     }
