@@ -114,7 +114,9 @@ function Get-SubredditImages {
 
         $MatchingPosts | ForEach-Object {
             $outPath = if ($UseRedditName) { 
-                    (Join-Path $Path (Split-Path ($_.name) -Leaf))
+                    $ext = ($_.url -replace '\?.*$') -split '\.' | Select-Object -Last 1
+                    if (-not $ext) { $ext = 'jpg'} # default guess
+                    (Join-Path $Path (Split-Path ($_.name) -Leaf)) + '.' + $ext
                 } else {
                     (Join-Path $Path (Split-Path ($_.url -replace '\?.*$') -Leaf))
                 }
