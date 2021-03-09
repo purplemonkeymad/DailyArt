@@ -39,9 +39,18 @@ function Show-DailyArt {
     
     end {
         
-        # run updater
-        Update-DailyArt -Refresh:$Refresh
+        # ignore issues here as they will just trigger an update anyway.
+        $ArtData = Get-DailyArtInfo -ErrorAction Ignore -WarningAction Ignore
 
+        $syncUpdate = $false
+        $imagefile = $ArtData.FileName
+        if ($refresh -or (-not (Test-Path -LiteralPath (Join-Path $FileCacheFolder $imagefile) -PathType Leaf ))) {
+            $syncUpdate = $true
+            # run updater first in sync
+            Update-DailyArt -Refresh:$true
+        }
+
+        # issues here indicate a problem.
         $ArtData = Get-DailyArtInfo
         if ($ArtData) {
             $file = Join-Path $FileCacheFolder $ArtData.FileName
@@ -52,6 +61,11 @@ function Show-DailyArt {
                 Write-Host $ArtData.Description -ForegroundColor Green
             }
 
+        }
+
+        if (-not $syncUpdate) {
+            # start an async update
+            $null = Start-Job -Name "DailyArt Update Job" -ScriptBlock { & (Import-module DailyArt -PassThru) { Update-DailyArt} }
         }
 
     }

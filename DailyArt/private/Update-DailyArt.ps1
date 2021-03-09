@@ -11,6 +11,7 @@ function Update-DailyArt {
     }
     
     end {
+        Write-Verbose "Starting Update Check"
         $Settings = Get-DailyArtSettings
         if (-not $settings.Subreddit) {
             # required settings value
