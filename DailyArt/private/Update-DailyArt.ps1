@@ -49,7 +49,8 @@ function Update-DailyArt {
                     Where-Object media -eq $null | # is a card 
                     Where-Object author -NotIn $settings.IgnoreUsername |
                     Where-Object {
-                        ([uri]$_.url | Split-Path -Leaf) -like '*.*' # url must have an extention in it.
+                        ([uri]$_.url | Split-Path -Leaf) -like '*.*' -or  # url must have an extention in it.
+                        ([bool]$_.gallery_data)# is a gallery link
                     }
                 if ($PostList.Count -eq 0){
                     Write-Warning "No link posts in feed, nothing to update."
@@ -58,9 +59,18 @@ function Update-DailyArt {
 
                 $Post = $PostList | Select-Object -First 1
 
+                $filenameInfo = if ([bool]$Post.gallery_data) {
+                    # gallery link
+                    Write-Verbose "Found a gallery post, taking just the first image."
+                    Convert-GalleryToUri $post | Select-Object -First 1 | Convert-UriToFilename
+                } else {
+                    # single image post
+                    Convert-UriToFilename $Post.Url
+                }
+
                 $newPostInfo = [DaItem]@{
-                    URI = $Post.url
-                    FileName = Split-Path ([uri]$Post.url).LocalPath -Leaf
+                    URI = $filenameInfo.uri
+                    FileName = $filenameInfo.filename
                     Poster = $Post.author
                     CommentsUri = "https://www.reddit.com{0}" -f $Post.permalink
                     Description = $Post.title
