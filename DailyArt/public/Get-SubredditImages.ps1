@@ -142,7 +142,7 @@ function Get-SubredditImages {
                         # only do a hash if the length matches
                         $FileHash = Get-FileHash $OutputFile.FullName | ForEach-Object Hash
                         if ($BadHash -eq $FileHash){
-                            Remove-Item $$OutputFile -ErrorAction SilentlyContinue
+                            Remove-Item $OutputFile.FullName -ErrorAction SilentlyContinue
                             # clear variable containing file so that further tests fail.
                             $OutputFile = $null
                         }
