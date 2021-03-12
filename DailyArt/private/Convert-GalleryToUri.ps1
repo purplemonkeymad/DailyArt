@@ -20,7 +20,9 @@ function Convert-GalleryToUri {
 
             # sort the gallery data by id to ensure the order is correct
             $t3SingleData.gallery_data.items | Sort-Object id | ForEach-Object media_id | ForEach-Object {
-                $t3SingleData.media_metadata.$_.s.u # select the url from the "s" type in the metadata (this should be the original picture)
+                [System.Web.HttpUtility]::HtmlDecode( # reddit api provides uris for galleries double escaped
+                 $t3SingleData.media_metadata.$_.s.u # select the url from the "s" type in the metadata (this should be the original picture)
+                )
             }
 
         }

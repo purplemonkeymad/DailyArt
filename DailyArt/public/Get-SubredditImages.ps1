@@ -89,7 +89,8 @@ function Get-SubredditImages {
             $Posts.where({
                 ([bool]$IncludeAllTitles -or # include all titles
                 ($_.title -Match "\d+\s*[x*\u00D7]\s*\d+")) -and # has number x number in title
-                $_.url -match "(\.png|.jpg|.jpeg)(\?.+)?$" -and # is a direct link to image
+                ([bool]$_.gallery_data -or # is a gallery
+                $_.url -match "(\.png|.jpg|.jpeg)(\?.+)?$") -and # is a direct link to image
                 ([bool]$IncludeNSFW -or # accept nsfw
                 (-not $_.over_18)) -and # ain't a nsfw post
                 ($_.author -NotIn $settings.IgnoreUsername) # user blacklist
@@ -119,39 +120,53 @@ function Get-SubredditImages {
             # the replace regex '\?.*$' removes the first question mark to the end of the string
             # this is to remove any query strings from the uri, this is just for the cheap determining of the name
 
-            $outPath = if ($UseRedditName) { 
+            if ($_.gallery_data) {
+                # gallery link
+                Write-Verbose "Found a gallery post $($_.url)"
+
+                $gallery = $_
+
+                $outImages = Convert-GalleryToUri $_ | Convert-UriToFilename
+                $OutputFile = $outImages | ForEach-Object {
+                    $filename = if ($UseRedditName) { 
+                        '{0}_{1}' -f $gallery.name,$_.filename # we prefix the name here so a json will match the prefix.
+                    } else {
+                        (Split-Path ($_.url -replace '\?.*$') -Leaf)
+                    }
+                    $outPath = Join-Path $Path $filename
+                    if (-not (Test-Path $outPath -PathType Leaf)){
+                        if ($PSCmdlet.ShouldProcess($_.uri , "Download Gallery Image $($gallery.name), with title $($gallery.title), and image name $($_.filename) to $outPath")){
+                            Save-ImageTo -Uri $_.uri -Path $outPath #  the object here should fall to Outputfile
+                        }
+                    }
+                }
+                # we use contains in the check as OutputFile is probably more than one file, if any are true we want to continue.
+                if ($SaveMetaData -and ($OutputFile.Success -contains $true)){
+                    # this should save the info with the same name but different extension.
+                    $jsonout =  if ($UseRedditName) {
+                        ( Join-path $Path $gallery.name ) +'.json'
+                    } else {
+                        ( Join-path $Path ( Split-Path $gallery.url -Leaf) ) +'.json'
+                    }
+                    $gallery | ConvertTo-Json -Depth 20 | Set-Content $jsonout
+                }
+            } else {
+                Write-Verbose "Downloading single link $($_.url)"
+                $outPath = if ($UseRedditName) { 
                     $ext = ($_.url -replace '\?.*$') -split '\.' | Select-Object -Last 1
                     if (-not $ext) { $ext = 'jpg'} # default guess
                     (Join-Path $Path (Split-Path ($_.name) -Leaf)) + '.' + $ext
                 } else {
                     (Join-Path $Path (Split-Path ($_.url -replace '\?.*$') -Leaf))
                 }
-            if (-not (Test-Path $outPath -PathType Leaf)){
-                if ($PSCmdlet.ShouldProcess($_.url , "Download $($_.name), with title $($_.title) to $outPath")){
-                    Invoke-WebRequest $_.url -OutFile $outPath -UseBasicParsing
-                    $OutputFile = Get-Item $outPath -ErrorAction SilentlyContinue
-
-                    #imgur does not 404 missing images but replaces them with the same image
-                    # we check if the size and has match the removed image.
-
-                    # the removed image is 503 bytes and has a sha 256 hash of
-                    # 9B5936F4006146E4E1E9025B474C02863C0B5614132AD40DB4B925A10E8BFBB9
-                    $BadHash = '9B5936F4006146E4E1E9025B474C02863C0B5614132AD40DB4B925A10E8BFBB9'
-
-                    if ($OutputFile.Length -eq 503) {
-                        # only do a hash if the length matches
-                        $FileHash = Get-FileHash $OutputFile.FullName | ForEach-Object Hash
-                        if ($BadHash -eq $FileHash){
-                            Remove-Item $OutputFile.FullName -ErrorAction SilentlyContinue
-                            # clear variable containing file so that further tests fail.
-                            $OutputFile = $null
+                if (-not (Test-Path $outPath -PathType Leaf)){
+                    if ($PSCmdlet.ShouldProcess($_.url , "Download $($_.name), with title $($_.title) to $outPath")){
+                        $OutputFile = Save-ImageTo -Uri $_.url -Path $outPath
+                        if ($SaveMetaData -and $OutputFile.Success){
+                            # this should save the info with the same name but different extension.
+                            $jsonout =  ( Join-path $OutputFile.File.Directory $OutputFile.File.basename ) +'.json'
+                            $_ | ConvertTo-Json -Depth 20 | Set-Content $jsonout
                         }
-                    }
-
-                    if ($SaveMetaData -and $OutputFile){
-                        # this should save the info with the same name but different extension.
-                        $jsonout =  ( Join-path $OutputFile.Directory $OutputFile.basename ) +'.json'
-                        $_ | ConvertTo-Json -Depth 20 | Set-Content $jsonout
                     }
                 }
             }
