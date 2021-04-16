@@ -90,6 +90,7 @@ function Get-SubredditImages {
                 ([bool]$IncludeAllTitles -or # include all titles
                 ($_.title -Match "\d+\s*[x*\u00D7]\s*\d+")) -and # has number x number in title
                 ([bool]$_.gallery_data -or # is a gallery
+                [bool]($_.url -like 'https://www.reddit.com/gallery/*') -or # alt gallery detection.
                 $_.url -match "(\.png|.jpg|.jpeg)(\?.+)?$") -and # is a direct link to image
                 ([bool]$IncludeNSFW -or # accept nsfw
                 (-not $_.over_18)) -and # ain't a nsfw post
@@ -120,7 +121,7 @@ function Get-SubredditImages {
             # the replace regex '\?.*$' removes the first question mark to the end of the string
             # this is to remove any query strings from the uri, this is just for the cheap determining of the name
 
-            if ($_.gallery_data) {
+            if ($_.gallery_data -or [bool]($_.url -like 'https://www.reddit.com/gallery/*')) {
                 # gallery link
                 Write-Verbose "Found a gallery post $($_.url)"
 
