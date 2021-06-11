@@ -169,6 +169,8 @@ function Get-SubredditImages {
                             $_ | ConvertTo-Json -Depth 20 | Set-Content $jsonout
                         }
                     }
+                } else {
+                    Write-Verbose "File already exists, skipping."
                 }
             }
         }

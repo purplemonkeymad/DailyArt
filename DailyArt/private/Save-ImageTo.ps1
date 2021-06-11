@@ -18,7 +18,14 @@ function Save-ImageTo {
     }
     
     process {
-        Invoke-WebRequest $uri -OutFile $Path -UseBasicParsing
+
+        $fixedUri = if ($uri -like '*&amp;*') {
+            [System.Web.HttpUtility]::HtmlDecode($uri)
+        } else {
+            $uri
+        }
+
+        Invoke-WebRequest $fixedUri -OutFile $Path -UseBasicParsing
         $OutputFile = Get-Item $Path -ErrorAction SilentlyContinue
 
         #imgur does not 404 missing images but replaces them with the same image
