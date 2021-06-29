@@ -127,7 +127,7 @@ function Get-SubredditImages {
 
                 $gallery = $_
 
-                $outImages = Convert-GalleryToUri $_ | Convert-UriToFilename
+                $outImages = Convert-GalleryToUri $_
                 $OutputFile = $outImages | ForEach-Object {
                     $filename = if ($UseRedditName) { 
                         '{0}_{1}' -f $gallery.name,$_.filename # we prefix the name here so a json will match the prefix.
