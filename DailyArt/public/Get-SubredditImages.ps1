@@ -111,7 +111,7 @@ function Get-SubredditImages {
         }
 
         if ($ClearTargetFolder){
-            Get-ChildItem -LiteralPath $Path | Where-Object Extension -in @('.jpg','.png','jpeg') | Remove-Item
+            Get-ChildItem -LiteralPath $Path | Where-Object Extension -in @('.jpg','.png','.jpeg') | Remove-Item
             if ($SaveMetaData){
                 Get-ChildItem -LiteralPath $Path | Where-Object Extension -in @('.json') | Remove-Item
             }
