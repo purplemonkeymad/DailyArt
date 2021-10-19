@@ -49,7 +49,8 @@ function Get-SubredditImages {
         [switch]$ClearTargetFolder,
         [switch]$IncludeAllTitles,
         [switch]$SaveMetaData,
-        [switch]$UseRedditName
+        [switch]$UseRedditName,
+        [switch]$IncludeVideos
 
     )
     
@@ -91,6 +92,8 @@ function Get-SubredditImages {
                 ($_.title -Match "\d+\s*[x*\u00D7]\s*\d+")) -and # has number x number in title
                 ([bool]$_.gallery_data -or # is a gallery
                 [bool]($_.url -like 'https://www.reddit.com/gallery/*') -or # alt gallery detection.
+                ( $IncludeVideos -and [bool]($_.url -like 'https://v.redd.it/*')) -or # vid
+                ( $IncludeVideos -and [bool]($_.preview.images.variants.mp4.source.url -like '*')) -or # gif with mp4 version
                 $_.url -match "(\.png|.jpg|.jpeg)(\?.+)?$") -and # is a direct link to image
                 ([bool]$IncludeNSFW -or # accept nsfw
                 (-not $_.over_18)) -and # ain't a nsfw post
@@ -150,6 +153,44 @@ function Get-SubredditImages {
                         ( Join-path $Path ( Split-Path $gallery.url -Leaf) ) +'.json'
                     }
                     $gallery | ConvertTo-Json -Depth 20 | Set-Content $jsonout
+                }
+            } elseif ( $IncludeVideos -and [bool]($_.url -like 'https://v.redd.it/*')) {
+                Write-Verbose "Downloading mp4 link $($_.url)"
+                $outPath = if ($UseRedditName) { 
+                    (Join-Path $Path (Split-Path ($_.name) -Leaf)) + '.mp4'
+                } else {
+                    (Join-Path $Path (Split-Path ($_.url -replace '\?.*$') -Leaf)) + '.mp4'
+                }
+                if ($_.secure_media.reddit_video.fallback_url){
+                    $vid_link = $_.secure_media.reddit_video.fallback_url
+                    Write-Verbose "Found video url: $vid_link"
+                    if ($PSCmdlet.ShouldProcess($vid_link , "Download vid $($_.name), with title $($_.title) to $outPath")){
+                        $OutputFile = Save-ImageTo -Uri $vid_link -Path $outPath
+                        if ($SaveMetaData -and $OutputFile.Success){
+                            # this should save the info with the same name but different extension.
+                            $jsonout =  ( Join-path $OutputFile.File.Directory $OutputFile.File.basename ) +'.json'
+                            $_ | ConvertTo-Json -Depth 20 | Set-Content $jsonout
+                        }
+                    }
+                }
+            } elseif ( $IncludeVideos -and [bool]($_.preview.images.variants.mp4.source.url)) {
+                Write-Verbose "Downloading giffed mp4 link $($_.url)"
+                $outPath = if ($UseRedditName) { 
+                    (Join-Path $Path (Split-Path ($_.name) -Leaf)) + '.mp4'
+                } else {
+                    (Join-Path $Path (Split-Path ($_.url -replace '\?.*$') -Leaf)) + '.mp4'
+                }
+                if ($_.preview.images.variants.mp4.source.url){
+                    $vid_link = $_.preview.images.variants.mp4.source.url
+                    Write-Verbose "Found video url: $vid_link"
+                    if ($PSCmdlet.ShouldProcess($vid_link , "Download vid $($_.name), with title $($_.title) to $outPath")){
+                        $OutputFile = Save-ImageTo -Uri $vid_link -Path $outPath
+                        if ($SaveMetaData -and $OutputFile.Success){
+                            # this should save the info with the same name but different extension.
+                            $jsonout =  ( Join-path $OutputFile.File.Directory $OutputFile.File.basename ) +'.json'
+                            $_ | ConvertTo-Json -Depth 20 | Set-Content $jsonout
+                        }
+                    }
                 }
             } else {
                 Write-Verbose "Downloading single link $($_.url)"
